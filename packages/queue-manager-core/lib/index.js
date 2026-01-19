@@ -13,12 +13,14 @@
  * - rate-limit: In-memory rate limiting with automatic cleanup
  * - env-file: Secure credential passing via temporary env files
  * - metrics: OpenTelemetry metrics with graceful fallback
+ * - reconnection-lock: Atomic lock for reconnection race condition prevention
  */
 
 const session = require('./session');
 const rateLimit = require('./rate-limit');
 const envFile = require('./env-file');
 const metrics = require('./metrics');
+const reconnectionLock = require('./reconnection-lock');
 
 module.exports = {
   // Session token utilities
@@ -37,5 +39,8 @@ module.exports = {
 
   // Metrics
   createMetrics: metrics.createMetrics,
-  createSpanUtils: metrics.createSpanUtils
+  createSpanUtils: metrics.createSpanUtils,
+
+  // Reconnection lock
+  createReconnectionLock: reconnectionLock.createReconnectionLock
 };
