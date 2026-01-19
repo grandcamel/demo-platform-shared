@@ -1,0 +1,64 @@
+# Shared Container Security Constraints
+# Usage: Include this file and reference anchors in your docker-compose.yml
+#
+# Example:
+#   include:
+#     - path: ../../demo-platform-shared/docker/compose-fragments/security-constraints.yml
+#
+#   services:
+#     demo-container:
+#       <<: *container-security
+#       <<: *resource-limits-standard
+
+# Security options for containers that need elevated privileges
+x-container-security: &container-security
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  cap_add:
+    - CHOWN
+    - SETUID
+    - SETGID
+    - DAC_OVERRIDE
+  read_only: true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=512m
+    - /home/demo:rw,exec,nosuid,size=256m
+
+# Security options for fully locked down containers (no capabilities)
+x-container-security-strict: &container-security-strict
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  read_only: true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=256m
+
+# Standard resource limits for demo containers
+x-resource-limits-standard: &resource-limits-standard
+  deploy:
+    resources:
+      limits:
+        memory: 2g
+        cpus: '2'
+        pids: 256
+
+# Lighter resource limits for supporting services
+x-resource-limits-light: &resource-limits-light
+  deploy:
+    resources:
+      limits:
+        memory: 512m
+        cpus: '1'
+        pids: 100
+
+# Heavy resource limits for resource-intensive operations
+x-resource-limits-heavy: &resource-limits-heavy
+  deploy:
+    resources:
+      limits:
+        memory: 4g
+        cpus: '4'
+        pids: 512

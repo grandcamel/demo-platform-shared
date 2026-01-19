@@ -1,0 +1,35 @@
+# Shared Logging Configuration
+# Usage: Include this file and reference anchors in your docker-compose.yml
+#
+# Example:
+#   include:
+#     - path: ../../demo-platform-shared/docker/compose-fragments/logging.yml
+#
+#   services:
+#     queue-manager:
+#       logging: *logging-standard
+
+# Standard logging configuration with size rotation
+x-logging-standard: &logging-standard
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+# Verbose logging for debugging (larger size, more files)
+x-logging-verbose: &logging-verbose
+  driver: json-file
+  options:
+    max-size: "50m"
+    max-file: "5"
+
+# Minimal logging for low-priority services
+x-logging-minimal: &logging-minimal
+  driver: json-file
+  options:
+    max-size: "5m"
+    max-file: "2"
+
+# No logging (for services that log to external systems)
+x-logging-none: &logging-none
+  driver: none

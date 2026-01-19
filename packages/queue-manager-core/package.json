@@ -1,0 +1,46 @@
+{
+  "name": "@demo-platform/queue-manager-core",
+  "version": "1.0.0",
+  "description": "Shared core utilities for demo platform queue managers",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./session": "./lib/session.js",
+    "./rate-limit": "./lib/rate-limit.js",
+    "./env-file": "./lib/env-file.js",
+    "./metrics": "./lib/metrics.js"
+  },
+  "files": [
+    "lib/"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:coverage": "node --test --experimental-test-coverage test/*.test.js",
+    "lint": "eslint lib/*.js",
+    "lint:fix": "eslint lib/*.js --fix"
+  },
+  "keywords": [
+    "demo-platform",
+    "queue-manager",
+    "session-management"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^9.0.1"
+  },
+  "peerDependencies": {
+    "@opentelemetry/api": "^1.9.0"
+  },
+  "peerDependenciesMeta": {
+    "@opentelemetry/api": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

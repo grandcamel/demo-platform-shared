@@ -1,0 +1,42 @@
+# Shared Health Check Configuration
+# Usage: Include this file and reference anchors in your docker-compose.yml
+#
+# Example:
+#   include:
+#     - path: ../../demo-platform-shared/docker/compose-fragments/healthcheck.yml
+#
+#   services:
+#     queue-manager:
+#       healthcheck:
+#         <<: *healthcheck-http
+#         test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+
+# HTTP health check (requires curl in container)
+x-healthcheck-http: &healthcheck-http
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  start_period: 10s
+
+# TCP health check (for services without HTTP endpoints)
+x-healthcheck-tcp: &healthcheck-tcp
+  interval: 30s
+  timeout: 5s
+  retries: 3
+  start_period: 5s
+
+# Redis health check
+x-healthcheck-redis: &healthcheck-redis
+  test: ["CMD", "redis-cli", "ping"]
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start_period: 5s
+
+# PostgreSQL health check
+x-healthcheck-postgres: &healthcheck-postgres
+  test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start_period: 10s
